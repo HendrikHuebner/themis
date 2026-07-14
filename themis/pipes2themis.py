@@ -168,7 +168,7 @@ class codeGenerator(naiveCodeGenerator):
         
         c.add('int thread_id = threadIdx.x % 32;')
         c.add('int warp_id = (blockIdx.x * blockDim.x + threadIdx.x) / 32;')
-        c.add('unsigned prefixlanes = (0xffffffffu >> (32 - thread_id));')
+        c.add('unsigned prefixlanes = thread_id == 0 ? 0u : ((1u << thread_id) - 1u);')
         c.add('int active = 0;')
         
         for spSeqId, spSeq in enumerate(pipe.subpipeSeqs):
